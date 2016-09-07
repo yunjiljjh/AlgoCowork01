@@ -8,7 +8,7 @@ public class OutputWriter {
 
 	public void print(String str){
 		try{
-			fw=new FileWriter("C:\\hw1\\2013198070.txt",true);
+			fw=new FileWriter("C:\\hw1\\algoOutput.txt",true);
 			fw.write(str);
 			fw.close();
 		}catch(IOException e){}
