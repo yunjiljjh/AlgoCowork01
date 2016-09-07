@@ -9,7 +9,6 @@ public class Solve {
 	private int [][] startingPoint;
 	private	int [][] endingPoint;
 
-	
 		public Solve(){
 		}
 }
