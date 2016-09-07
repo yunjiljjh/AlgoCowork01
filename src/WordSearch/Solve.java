@@ -48,7 +48,7 @@ public class Solve {
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 					if (howManyinDictionary == 0) --> 없으니까 print 0
 					else{
-						
+						밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
 					}
 			}
 		
@@ -57,10 +57,14 @@ public class Solve {
 		/*
 		 * 주변 문자 seek 함수. dictionary[][]에서 current point를 움직인다.
 		 */
-		private char seekRight(int x, int y){return ;}
-		private void seekLeft(int x, int y){currentPointY =  (currentPointY-1)%N;}
-		private void seekUp(int x, int y){currentPointX =  (currentPointX-1)%N;}
-		private void seekDown(int x, int y){currentPointX =  (currentPointX+1)%N;}
+		private char seekRight(int x, int y){return dictionary[x][(y+1)%N];}
+		private char seekLeft(int x, int y){return dictionary[x][(y-1)%N];}
+		private char seekUp(int x, int y){return dictionary[(x-1)%N][y];}
+		private char seekDown(int x, int y){return dictionary[(x+1)%N][y];}
+		private char seekUpRight(int x, int y){return dictionary[(x-1)%N][(y+1)%N];}
+		private char seekDownLeft(int x, int y){return dictionary[(x+1)%N][(y-1)%N];}
+		private char seekDownRight(int x, int y){return  쓰고 ;}
+		private char seekUpLeft(int x, int y){return 쓰고;}
 		
 		/*
 		 * 칸 이동 함수. dictionary[][]에서 current point를 움직인다.
@@ -79,14 +83,13 @@ public class Solve {
 				currentPointX = (currentPointX-currentPointY) + (currentPointY-1)%(N-(currentPointX-currentPointY));
 				currentPointY = (currentPointY-1)%(N-(currentPointX-currentPointY));	}
 			}
-		private void UpLeft(){
+		private void goUpLeft(){
 			if (currentPointX < currentPointY) {
 				currentPointX = (currentPointX+1)%(N-(currentPointY-currentPointX));
 				currentPointY = (currentPointY-currentPointX) + (currentPointX+1)%(N-(currentPointY-currentPointX)) ; }
 				else{
 				currentPointX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
 				currentPointY = (currentPointY+1)%(N-(currentPointX-currentPointY)) ; }
-
 		}
 
 		
