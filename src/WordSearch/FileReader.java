@@ -1,10 +1,9 @@
 package WordSearch;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+
 
 
 public class FileReader {
@@ -21,7 +20,6 @@ public class FileReader {
 		try{
 		fr=new FileReader(path);
 		br=new BufferedReader(fr);
-
 	
 		}catch(IOException e){
 			e.printStackTrace();
