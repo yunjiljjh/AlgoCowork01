@@ -7,7 +7,7 @@ public class OutputWriter {
 	private String path;
 	private FileWriter fw;
 	private StringBuilder sb;
-	public FileWriter(String path){
+	public OutputWriter(String path){
 		this.path=path;
 		sb=new StringBuilder();
 	}
