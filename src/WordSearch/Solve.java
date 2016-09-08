@@ -44,18 +44,101 @@ public class Solve {
 		
 		private void findWords(){ //실제 퍼즐을 푸는 함수
 			for (int k = 0 ; k < M ; k++){ //traverse M number of words
-				char firstLetterofTheWord = words[k][0];
-				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
-					if (howManyinDictionary == 0) --> 없으니까 print 0
-					else{
-						밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
-					}
-			}
-		
-		}
+				 		//Search for a word in a loop
+				 		char firstLetterofTheWord = words[k][0];
+				 		int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
+				 					if (howManyinDictionary == 0)
+				 					{//--> 없으니까 print 0
+				 						wordsLoc[k] = "0\n";
+				 					}
+				 					else{
+				 						canditLocs[0][0] = -1;
+				 						
+				 						//locating potential start point
+				 						this.currentPointX = alpha.getX(k+1); // getX의 함수를 고치는 방법도.
+				 						this.currentPointY = alpha.getY(k+1);						
+				 						
+				 						//checking surrounds
+				 						
+				 						if ( checkRight(this.currentPointX, this.currentPointY)  )
+				 						{
+				 							setCanditLocs();
+				 						}
+				 						if ( checkLeft(this.currentPointX, this.currentPointY)  )
+				 						{
+				 							setCanditLocs();
+				 						}
+				 						//continue
+				 						
+				 						//determines 
+				 						setWordsLoc(k); 
+				 						
+				 					//	밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
+				 					}
+				 			}
+				 		
+				 		}
+				 		
+				 		//Search canditLocs[][] and set wordsLoc
+				 		private void setWordsLoc(int k)
+						{
+				 			if (canditLocs[0][0] == -1)
+				 			{
+				 				wordsLoc[k] = '0\n';
+				 				
+				 			}else{
+				 				for (i=0; i < this.M-1; i++)
+				 				{
+				 					if (canditLocs[i][0] < canditLocs[i+1][0])
+				 					{
+				 						wordsLoc[k] = canditLocs[i+1];
+				 					} else if (canditLocs[i][0] == canditLocs[i+1][0])
+				 					{
+				 						if (canditLocs[i][1] < canditLocs[i+1][1])
+				 						{
+				 							wordsLoc[k] = canditLocs[i+1];
+				 						}
+				 					} else {
+				 						wordsLoc[k] = canditLocs[i];
+				 					}
+				 				}
+				 			}
+				 		}
+				 		
+				 		private void setCanditLocs()
+				 		{
+				 			for (i=0; i<this.M; i++)
+				 			{				
+				 				if (canditLocs[i][0] == -1)
+				 				{					
+				 					canditLocs[i][0] = tempX;
+				 					canditLocs[i][1] = tempY;
+				 					break;
+				 				} 
+				 			}
+				 		}
+				 		
+				 		//return true and set tempX, tempY as lastPoint
+				 		private boolean checkRight(int x, int y)
+				 		{
+				 			this.tempX = x;
+				 			this.tempY = (y+1)%N;
+				 			if (words[indicatingPointX][indicatingPointY] == ‘\n’) 
+				 			{	
+				 				return true;
+				 			}
+				 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+				 			{
+				 				indicatingPointY += 1;
+				 				return checkRight(x, tempY);
+				 			} else {
+				 		return false;
+				 	}
+				 		}
+				 		
 		
 		/*
-		 * 주변 문자 seek 함수. dictionary[][]에서 current point를 움직인다.
+		 * 주변 문자 seek 함수. dictionary[][]에서 current point 주변을 살핀다.
 		 */
 		private char seekRight(int x, int y){return dictionary[x][(y+1)%N];}
 		private char seekLeft(int x, int y){return dictionary[x][(y-1)%N];}
@@ -63,8 +146,14 @@ public class Solve {
 		private char seekDown(int x, int y){return dictionary[(x+1)%N][y];}
 		private char seekUpRight(int x, int y){return dictionary[(x-1)%N][(y+1)%N];}
 		private char seekDownLeft(int x, int y){return dictionary[(x+1)%N][(y-1)%N];}
-		private char seekDownRight(int x, int y){return  쓰고 ;}
-		private char seekUpLeft(int x, int y){return 쓰고;}
+		private char seekDownRight(int x, int y){
+			if (currentPointX < currentPointY) return dictionary[(currentPointX-1)%(N-(currentPointY-currentPointX))][(currentPointY-currentPointX) + (currentPointX-1)%(N-(currentPointY-currentPointX))];
+			else return dictionary[(currentPointX-currentPointY) + (currentPointY-1)%(N-(currentPointX-currentPointY))][(currentPointY-1)%(N-(currentPointX-currentPointY))]; 
+			}
+		private char seekUpLeft(int x, int y){
+			if (currentPointX < currentPointY) return dictionary[(currentPointX+1)%(N-(currentPointY-currentPointX))][(currentPointY-currentPointX) + (currentPointX+1)%(N-(currentPointY-currentPointX))];
+			else return dictionary[ (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY))][(currentPointY+1)%(N-(currentPointX-currentPointY))];
+		}
 		
 		/*
 		 * 칸 이동 함수. dictionary[][]에서 current point를 움직인다.
