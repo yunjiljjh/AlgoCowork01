@@ -25,14 +25,14 @@ public class Solve {
 	//RIM
 	private int tempX;
 	private int tempY;
-	private int[8][2] canditLocs; // canditLocs[up][0]: word를  up방향에서 찾았을 때 x의 좌표
-	public int wordsLoc = new int[M][4]; // wordsLoc[word][0]: canditLocs 중 endingPoint의 좌표가 가장 00에 가까운 word의 좌표
+	private int[][] canditLocs = new int[8][2]; // canditLocs[up][0]: word를  up방향에서 찾았을 때 x의 좌표
+	public int[][] wordsLoc = new int[M][4]; // wordsLoc[word][0]: canditLocs 중 endingPoint의 좌표가 가장 00에 가까운 word의 좌표
 	// words[0][0]: 첫 번째 word의 startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
 	public String result = "";
 
 	//RIM
 //	public Solve(char[][] dictionary, char[][] words, int N, int M){
-	public String Solve(char[][] dictionary, char[][] words, int N, int M){
+	public Solve(char[][] dictionary, char[][] words, int N, int M){
 			alpha = new Alphabet[26];
 			this.N = N;
 			this.M = M;
@@ -45,9 +45,13 @@ public class Solve {
 			//RIM
 			//return wordsLoc;
 			//convert int[][] to string
-			for (int i; i < M; i++)
+			for (int i=0; i < M; i++)
 			{
-				result += java.Util.Arrays.toString(wordsLoc[i]);
+				if(wordsLoc[i][0] == -1){
+					result += "0\n";
+				}else{
+					result = result + java.util.Arrays.toString(wordsLoc[i]) + '\n';
+				}
 			}
 		}
 		
@@ -62,7 +66,8 @@ public class Solve {
 
 		
 		
-		private void findWords(){ //실제 퍼즐을 푸는 함수
+		private void findWords()
+		{ //실제 퍼즐을 푸는 함수
 			for (int k = 0 ; k < M ; k++)
 			{ //traverse M number of words
 			//Search for a word in a loop
@@ -70,59 +75,57 @@ public class Solve {
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 				if (howManyinDictionary == 0)
 			 	{//--> 없으니까 print 0
-			 		wordsLoc[k] = "0\n";
+			 		wordsLoc[k][0] = -1;
 			 	} else {
-			 	canditLocs[0][0] = -1;
+			 		canditLocs[0][0] = -1;
 			 						
- 				while(true)
- 				{
- 					if(k+1 < alpha.getSize())
- 					{
- 						//locating potential start point
- 						this.currentPointX = alpha.getX(k+1); // getX의 함수를 고치는 방법도.
- 						this.currentPointY = alpha.getY(k+1);						
- 					} else if (k+1 >= 800) {
- 						this.currentPointX = (this.currrentPointX + 1)% this.N;
-						this.currentPointY = (this.currrentPointY + 1);			
-						if (this.currentPointX == N && this.currentPointY == N)
-						{
-							wordsLoc[k] = "0\n";
+	 				while(true)
+	 				{
+	 					if(k+1 < alpha.getSize())
+	 					{
+	 						//locating potential start point
+	 						this.currentPointX = alpha.getX(k+1); // getX의 함수를 고치는 방법도.
+	 						this.currentPointY = alpha.getY(k+1);						
+	 					} else if (k+1 >= 800) {
+	 						this.currentPointX = (this.currentPointX + 1)% this.N;
+							this.currentPointY = (this.currentPointY + 1);			
+							if (this.currentPointX == N && this.currentPointY == N)
+							{
+								wordsLoc[k][0] = -1;
+								break;
+							}
+						} else {
+							wordsLoc[k][0] = -1;
 							break;
 						}
-					} else {
-						wordsLoc[k] = "0\n";
-						break;
-					}
- 					//checking surrounds
- 					
- 					if ( checkRight(this.currentPointX, this.currentPointY)  )
- 					{
- 						setCanditLocs();
- 					}
- 					if ( checkLeft(this.currentPointX, this.currentPointY)  )
- 					{
- 						setCanditLocs();
- 					}
- 					//continue
- 						
- 					//determines 
- 					setWordsLoc(k); 
-				 						
-	 				//	밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
-	 			}
-		 	}
-				 		
-		 }
+	 					//checking surrounds
+	 					
+	 					if ( checkRight(this.currentPointX, this.currentPointY)  )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					if ( checkLeft(this.currentPointX, this.currentPointY)  )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					//continue
+	 						
+	 					//determines 
+	 					setWordsLoc(k); 
+	 				}	 						
+		 				//	밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
+				 }		
+			}
+		}
 				 		
  		//Search canditLocs[][] and set wordsLoc
  		private void setWordsLoc(int k)
 		{
  			if (canditLocs[0][0] == -1)
  			{
- 				wordsLoc[k] = '-1';
- 				
+ 				wordsLoc[k][0] = -1;				
  			}else{
- 				for (i=0; i < this.M-1; i++)
+ 				for (int i=0; i < this.M-1; i++)
  				{
  					if (canditLocs[i][0] < canditLocs[i+1][0])
  					{
@@ -147,7 +150,7 @@ public class Solve {
  		
  		private void setCanditLocs()
  		{
- 			for (i=0; i<this.M; i++)
+ 			for (int i=0; i<this.M; i++)
  			{				
  				if (canditLocs[i][0] == -1)
  				{					
@@ -164,7 +167,7 @@ public class Solve {
 
  			this.tempX = x;
  			this.tempY = (y+1)%N;
- 			if (words[indicatingPointX][indicatingPointY] == ‘\n’) 
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
  			{	
  				return true;
  			}
