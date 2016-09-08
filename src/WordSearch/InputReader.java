@@ -13,14 +13,14 @@ package WordSearch;
 		
 		public char dictionary[][] = null;
 		public char words[][] = null;
-		public final int N;
-		public final int M;
+		public int N;
+		public int M;
 		
 		public InputReader(String path){
 			pointer=0;
 			read(path);
-		
 		}
+		
 		private void read(String path){
 			try{
 			fr=new FileReader(path);
@@ -29,23 +29,23 @@ package WordSearch;
 			String s = null;
 			
 			s = br.readLine();
-			char[] firstLine = s.split();
-			N = Integer.parseInt(firstLine[0]);
-			M = Integer.parseInt(firstLine[1]);
+			String[] a = s.split(" ");
+			N = Integer.parseInt(a[0]);
+			M = Integer.parseInt(a[1]);
 			
 			while((s=br.readLine())!=null){
 				int row = 0;
-				s.toCharArray();
+				char[] c = s.toCharArray();
 				for (int i=0; i<N; i++){
-					dictionary[row][i] = s[i];
+					dictionary[row][i] = c[i];
 				}
 				row++;
 			}
 			while((s=br.readLine())!=null){
 				int row = 0;
-				s.toCharArray();
+				char[] c = s.toCharArray();
 				for (int j=0; j<M; j++){
-					words[row][j] = s[j];
+					words[row][j] = c[j];
 				}
 				row++;
 			}
