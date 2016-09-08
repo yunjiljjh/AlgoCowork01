@@ -41,6 +41,8 @@ public class Solve {
 				}
 			}
 		}
+
+		
 		
 		private void findWords(){ //실제 퍼즐을 푸는 함수
 			for (int k = 0 ; k < M ; k++){ //traverse M number of words
@@ -54,24 +56,39 @@ public class Solve {
 				 					else{
 				 						canditLocs[0][0] = -1;
 				 						
-				 						//locating potential start point
-				 						this.currentPointX = alpha.getX(k+1); // getX의 함수를 고치는 방법도.
-				 						this.currentPointY = alpha.getY(k+1);						
-				 						
-				 						//checking surrounds
-				 						
-				 						if ( checkRight(this.currentPointX, this.currentPointY)  )
+				 						while(true)
 				 						{
-				 							setCanditLocs();
-				 						}
-				 						if ( checkLeft(this.currentPointX, this.currentPointY)  )
-				 						{
-				 							setCanditLocs();
-				 						}
-				 						//continue
-				 						
-				 						//determines 
-				 						setWordsLoc(k); 
+					 						if(k+1 < alpha.getSize())
+					 						{
+					 							//locating potential start point
+						 						this.currentPointX = alpha.getX(k+1); // getX의 함수를 고치는 방법도.
+						 						this.currentPointY = alpha.getY(k+1);						
+					 						} else if (k+1 >= 800) {
+					 							this.currentPointX = (this.currrentPointX + 1)% this.N;
+												this.currentPointY = (this.currrentPointY + 1);			
+												if (this.currentPointX == N && this.currentPointY == N)
+												{
+													wordsLoc[k] = "0\n";
+													break;
+												}
+											} else {
+												wordsLoc[k] = "0\n";
+												break;
+											}
+					 						//checking surrounds
+					 						
+					 						if ( checkRight(this.currentPointX, this.currentPointY)  )
+					 						{
+					 							setCanditLocs();
+					 						}
+					 						if ( checkLeft(this.currentPointX, this.currentPointY)  )
+					 						{
+					 							setCanditLocs();
+					 						}
+					 						//continue
+					 						
+					 						//determines 
+					 						setWordsLoc(k); 
 				 						
 				 					//	밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
 				 					}
@@ -84,7 +101,7 @@ public class Solve {
 						{
 				 			if (canditLocs[0][0] == -1)
 				 			{
-				 				wordsLoc[k] = '0\n';
+				 				wordsLoc[k] = '-1';
 				 				
 				 			}else{
 				 				for (i=0; i < this.M-1; i++)
