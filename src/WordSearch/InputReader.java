@@ -9,15 +9,12 @@ package WordSearch;
 		private FileReader fr;
 		private BufferedReader br;
 		
-		private int pointer;
-		
 		public char dictionary[][] = null;
 		public char words[][] = null;
 		public int N;
 		public int M;
 		
 		public InputReader(String path){
-			pointer=0;
 			read(path);
 		}
 		
@@ -30,6 +27,7 @@ package WordSearch;
 			int rowDic = 0;
 			int rowWord = 0;
 			
+			// reads the first line and set N, M
 			s = br.readLine();
 			String[] a = s.split(" ");
 			N = Integer.parseInt(a[0]);
@@ -38,6 +36,9 @@ package WordSearch;
 			dictionary = new char[N][N];
 			words = new char[M][];
 			
+			/* set dictionary[][]. Remove whitespaces. Put each character of the lines to dictionary. 
+			 * rowDic is pointer.
+			 */
 			while((s=br.readLine())!=null){
 				String[] ss = s.split(" ");
 				char[] c = new char[ss.length];
