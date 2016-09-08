@@ -8,7 +8,10 @@ public class OutputWriter {
 
 	public void print(String str){
 		try{
-			fw=new FileWriter("C:\\hw1\\algoOutput.txt",true);
+//			fw=new FileWriter("C:\\hw1\\algoOutput.txt",true);
+//for test
+			fw=new FileWriter("algoOutput.txt",true);
+
 			fw.write(str);
 			fw.close();
 		}catch(IOException e){}

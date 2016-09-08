@@ -38,6 +38,7 @@ public class Solve {
 			this.M = M;
 			fillAlpha(); //with dictionary[][], record where each alphabet is located
 			this.dictionary = dictionary;
+			System.out.println(dictionary[0][0]);
 			this.words = words;
 
 			findWords(); //실제 퍼즐을 푸는 함수
@@ -58,8 +59,10 @@ public class Solve {
 		private void fillAlpha(){
 			for (int i = 0 ; i < N ; i++){
 				for (int j = 0 ; j < N ; j++){
-					int alphaACII = (int)dictionary[i][j] - 97;
+					System.out.println((dictionary[i][j]));
+					int alphaACII = (int)(dictionary[i][j]) - 97;
 					alpha[alphaACII].setXY(i, j);
+					
 				}
 			}
 		}
@@ -164,7 +167,6 @@ public class Solve {
  		//return true and set tempX, tempY as lastPoint
  		private boolean checkRight(int x, int y)
  		{
-
  			this.tempX = x;
  			this.tempY = (y+1)%N;
  			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
@@ -173,7 +175,23 @@ public class Solve {
  			}
  			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
  			{
- 				indicatingPointY += 1;
+ 				indicatingPointY++;
+ 				return checkRight(x, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		private boolean checkLeft(int x, int y)
+ 		{
+ 			this.tempX = x;
+ 			this.tempY = (y-1)%N;
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY--;
  				return checkRight(x, tempY);
  			} else {
  				return false;

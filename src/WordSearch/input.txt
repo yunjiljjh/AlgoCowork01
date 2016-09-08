@@ -1,0 +1,20 @@
+9 10 
+i c o n q u e r w
+n r o u d e e p a
+t r o g r l d s r
+e g g g p z y h e
+r u j p l i n e a
+s y a n p a a a s
+d i v i d e m p o
+r e a l q i i h f
+n o m e l x c i t
+algorithm
+conquer
+divide
+dynamic
+greedy
+heap
+java
+linear
+memory
+software
