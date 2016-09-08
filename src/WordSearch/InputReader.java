@@ -27,27 +27,37 @@ package WordSearch;
 			br=new BufferedReader(fr);
 			
 			String s = null;
+			int rowDic = 0;
+			int rowWord = 0;
 			
 			s = br.readLine();
 			String[] a = s.split(" ");
 			N = Integer.parseInt(a[0]);
 			M = Integer.parseInt(a[1]);
 			
+			dictionary = new char[N][N];
+			words = new char[M][];
+			
 			while((s=br.readLine())!=null){
-				int row = 0;
-				char[] c = s.toCharArray();
+				String[] ss = s.split(" ");
+				char[] c = new char[ss.length];
 				for (int i=0; i<N; i++){
-					dictionary[row][i] = c[i];
+					c[i] = ss[i].charAt(0);
 				}
-				row++;
+				for (int i=0; i<N; i++){
+					dictionary[rowDic][i] = c[i];
+				}
+				rowDic++;
+				if (rowDic == N) break;
 			}
 			while((s=br.readLine())!=null){
-				int row = 0;
+				if (rowWord==M-1) break;
 				char[] c = s.toCharArray();
-				for (int j=0; j<M; j++){
-					words[row][j] = c[j];
+				words[rowWord] = new char[c.length];
+				for (int j=0; j<c.length; j++){
+					words[rowWord][j] = c[j];
 				}
-				row++;
+				rowWord++;
 			}
 			}catch(IOException e){
 				e.printStackTrace();
