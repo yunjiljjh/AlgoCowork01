@@ -111,6 +111,30 @@ public class Solve {
 	 					{
 	 						setCanditLocs();
 	 					}
+	 					if ( checkUp(this.currentPointX, this.currentPointY) )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					if ( checkDown(this.currentPointX, this.currentPointY) )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					if ( checkUpRight(this.currentPointX, this.currentPointY) )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					if ( checkDownLeft(this.currentPointX, this.currentPointY) )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					if ( checkUpLeft(this.currentPointX, this.currentPointY) )
+	 					{
+	 						setCanditLocs();
+	 					}
+	 					if ( checkDownRight(this.currentPointX, this.currentPointY) )
+	 					{
+	 						setCanditLocs();
+	 					}
 	 					//continue
 	 						
 	 					//determines 
@@ -191,13 +215,121 @@ public class Solve {
  			}
  			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
  			{
- 				indicatingPointY--;
- 				return checkRight(x, tempY);
+ 				indicatingPointY++;
+ 				return checkLeft(tempX, tempY);
  			} else {
  				return false;
 		 	}
  		}
-	 		
+ 		private boolean checkUp(int x, int y)
+ 		{
+ 			this.tempX = (x-1)%N;
+ 			this.tempY = y;
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY++;
+ 				return checkUp(tempX, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		private boolean checkDown(int x, int y)
+ 		{
+ 			this.tempX = (x+1)%N;
+ 			this.tempY = y;
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY++;
+ 				return checkDown(tempX, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		private boolean checkUpRight(int x, int y)
+ 		{
+ 			this.tempX = (x-1)%N;
+ 			this.tempY = (y+1)%N;
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY++;
+ 				return checkUpRight(tempX, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		private boolean checkDownLeft(int x, int y)
+ 		{
+ 			this.tempX = (x+1)%N;
+ 			this.tempY = (y-1)%N;
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY++;
+ 				return checkDownLeft(tempX, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		private boolean checkUpLeft(int x, int y)
+ 		{
+			if (currentPointX < currentPointY)
+			{
+				this.tempX = (currentPointX+1)%(N-(currentPointY-currentPointX));
+				this.tempY = (currentPointY-currentPointX) + (currentPointX+1)%(N-(currentPointY-currentPointX));
+			} else {
+				this.tempX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
+				this.tempY = (currentPointY+1)%(N-(currentPointX-currentPointY));
+			}
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY++;
+ 				return checkUpLeft(tempX, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		private boolean checkDownRight(int x, int y)
+ 		{
+			if (currentPointX < currentPointY)
+			{
+				this.tempX = (currentPointX-1)%(N-(currentPointY-currentPointX));
+				this.tempY = (currentPointY-currentPointX) + (currentPointX-1)%(N-(currentPointY-currentPointX));
+			} else {
+				this.tempX = (currentPointX-currentPointY) + (currentPointY-1)%(N-(currentPointX-currentPointY));
+				this.tempY = (currentPointY-1)%(N-(currentPointX-currentPointY)); 
+			}
+ 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			{	
+ 				return true;
+ 			}
+ 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			{
+ 				indicatingPointY++;
+ 				return checkDownRight(tempX, tempY);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+
 
 		/*
 		 * 주변 문자 seek 함수. dictionary[][]에서 current point 주변을 살핀다.
