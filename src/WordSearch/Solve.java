@@ -81,11 +81,11 @@ public class Solve {
 			 						
 	 				while(true)
 	 				{
-	 					if(k+1 < alpha[(int)firstLetterofTheWord-97].getSize())
+	 					if(k+1 < alpha.getSize())
 	 					{
 	 						//locating potential start point
-	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(k+1); // getX의 함수를 고치는 방법도.
-	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(k+1);						
+	 						this.currentPointX = alpha.getX(k+1); // getX의 함수를 고치는 방법도.
+	 						this.currentPointY = alpha.getY(k+1);						
 	 					} else if (k+1 >= 800) {
 	 						this.currentPointX = (this.currentPointX + 1)% this.N;
 							this.currentPointY = (this.currentPointY + 1);			
