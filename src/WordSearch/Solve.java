@@ -22,15 +22,26 @@ public class Solve {
 	private	int endingPointX; //x location of ending point
 	private	int endingPointY; //y location of ending point
 	
-		public Solve(char[][] dictionary, char[][] words, int N, int M){
+	//RIM
+	private int tempX;
+	private int tempY;
+	private int[8][2] canditLocs;
+	public int[20][4] wordsLoc; // wordsLoc[i][0]
+
+	//RIM
+//	public Solve(char[][] dictionary, char[][] words, int N, int M){
+	public int[][] Solve(char[][] dictionary, char[][] words, int N, int M){
 			alpha = new Alphabet[26];
 			this.N = N;
 			this.M = M;
 			fillAlpha(); //with dictionary[][], record where each alphabet is located
 			this.dictionary = dictionary;
 			this.words = words;
-			
+
 			findWords(); //실제 퍼즐을 푸는 함수
+			
+			//RIM
+			return wordsLoc;
 		}
 		
 		private void fillAlpha(){
@@ -108,16 +119,21 @@ public class Solve {
 				 				{
 				 					if (canditLocs[i][0] < canditLocs[i+1][0])
 				 					{
-				 						wordsLoc[k] = canditLocs[i+1];
+				 						wordsLoc[k][3] = canditLocs[i+1][0];
+				 						wordsLoc[k][4] = canditLocs[i+1][1];
 				 					} else if (canditLocs[i][0] == canditLocs[i+1][0])
 				 					{
 				 						if (canditLocs[i][1] < canditLocs[i+1][1])
 				 						{
-				 							wordsLoc[k] = canditLocs[i+1];
+				 							wordsLoc[k][3] = canditLocs[i+1][0];
+				 							wordsLoc[k][4] = canditLocs[i+1][1];
 				 						}
 				 					} else {
-				 						wordsLoc[k] = canditLocs[i];
+				 						wordsLoc[k][3] = canditLocs[i][0];
+				 						wordsLoc[k][3] = canditLocs[i][1];
 				 					}
+				 					wordsLoc[k][0] = this.currentPointX;
+				 					wordsLoc[k][1] = this.currentPointY;
 				 				}
 				 			}
 				 		}
@@ -138,6 +154,7 @@ public class Solve {
 				 		//return true and set tempX, tempY as lastPoint
 				 		private boolean checkRight(int x, int y)
 				 		{
+			
 				 			this.tempX = x;
 				 			this.tempY = (y+1)%N;
 				 			if (words[indicatingPointX][indicatingPointY] == ‘\n’) 
