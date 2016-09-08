@@ -5,18 +5,16 @@ package WordSearch;
 	import java.io.FileReader;
 	import java.io.IOException;
 
-
-
 	public class InputReader {
 		private FileReader fr;
 		private BufferedReader br;
 		
 		private int pointer;
 		
-		public int n;
-		public int m;
-		public char dictionary[][];
-		public char words[][];
+		public char dictionary[][] = null;
+		public char words[][] = null;
+		public final int N;
+		public final int M;
 		
 		public InputReader(String path){
 			pointer=0;
@@ -32,17 +30,24 @@ package WordSearch;
 			
 			s = br.readLine();
 			char[] firstLine = s.split();
-			n = Integer.parseInt(firstLine[0]);
-			m = Integer.parseInt(firstLine[1]);
+			N = Integer.parseInt(firstLine[0]);
+			M = Integer.parseInt(firstLine[1]);
 			
 			while((s=br.readLine())!=null){
-				while (s!==""){
-					for (i=0; i<s.length(); i++){
-						dictionary[i] = s;
-					}
+				int row = 0;
+				s.toCharArray();
+				for (int i=0; i<N; i++){
+					dictionary[row][i] = s[i];
 				}
-				
-				
+				row++;
+			}
+			while((s=br.readLine())!=null){
+				int row = 0;
+				s.toCharArray();
+				for (int j=0; j<M; j++){
+					words[row][j] = s[j];
+				}
+				row++;
 			}
 			}catch(IOException e){
 				e.printStackTrace();
@@ -61,5 +66,6 @@ package WordSearch;
 				}
 			}
 		}
+		
 		
 }
