@@ -25,8 +25,9 @@ public class Solve {
 	//RIM
 	private int tempX;
 	private int tempY;
-	private int[8][2] canditLocs;
-	public int[20][4] wordsLoc; // wordsLoc[i][0]
+	private int[8][2] canditLocs; // canditLocs[up][0]: word를  up방향에서 찾았을 때 x의 좌표
+	public int[20][4] wordsLoc; // wordsLoc[word][0]: canditLocs 중 endingPoint의 좌표가 가장 00에 가까운 word의 좌표
+	// words[0][0]: 첫 번째 word의 startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
 
 	//RIM
 //	public Solve(char[][] dictionary, char[][] words, int N, int M){
@@ -119,17 +120,17 @@ public class Solve {
 				 				{
 				 					if (canditLocs[i][0] < canditLocs[i+1][0])
 				 					{
-				 						wordsLoc[k][3] = canditLocs[i+1][0];
-				 						wordsLoc[k][4] = canditLocs[i+1][1];
+				 						wordsLoc[k][2] = canditLocs[i+1][0];
+				 						wordsLoc[k][3] = canditLocs[i+1][1];
 				 					} else if (canditLocs[i][0] == canditLocs[i+1][0])
 				 					{
 				 						if (canditLocs[i][1] < canditLocs[i+1][1])
 				 						{
-				 							wordsLoc[k][3] = canditLocs[i+1][0];
-				 							wordsLoc[k][4] = canditLocs[i+1][1];
+				 							wordsLoc[k][2] = canditLocs[i+1][0];
+				 							wordsLoc[k][3] = canditLocs[i+1][1];
 				 						}
 				 					} else {
-				 						wordsLoc[k][3] = canditLocs[i][0];
+				 						wordsLoc[k][2] = canditLocs[i][0];
 				 						wordsLoc[k][3] = canditLocs[i][1];
 				 					}
 				 					wordsLoc[k][0] = this.currentPointX;
