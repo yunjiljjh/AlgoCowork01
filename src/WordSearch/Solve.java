@@ -16,39 +16,50 @@ public class Solve {
 	private int currentPointY; //current location of 'y' in (x,y) of dictionary[][]
 	private int indicatingPointX;  //current location of 'x' in (x,y) of words[][]
 	private int indicatingPointY;  //current location of 'y' in (x,y) of words[][]
-	
+/*	
 	private int startingPointX; //x location of starting point
 	private int startingPointY; //y location of starting point
 	private	int endingPointX; //x location of ending point
 	private	int endingPointY; //y location of ending point
-	
-	//RIM
+*/	
 	private int tempX;
 	private int tempY;
 	private int[][] canditLocs = new int[8][2]; // canditLocs[up][0]: deleted
 	public int[][] wordsLoc; // wordsLoc[word][0]: canditLocs deleted
 	public String result = "";
 
-	//RIM
-//	public Solve(char[][] dictionary, char[][] words, int N, int M){
 	public Solve(char[][] dictionary, char[][] words, int N, int M){
+		
+			System.out.println("enters into Solve constructor");
+		
 			alpha = new Alphabet[26];
 			for (int i=0; i<alpha.length; i++){
 				alpha[i] = new Alphabet();
 			}
-
+			
 			this.N = N;
 			this.M = M;
 			this.dictionary = dictionary;
-			fillAlpha(); //with dictionary[][], record where each alphabet is located
+
+			fillAlpha(); //with dictionary[][], record where each alphabet is located			
+
 			this.words = words;
 			this.wordsLoc = new int[M][4];
+			//wordsLoc init
+			for (int i=0; i < M; i++)
+			{
+				this.wordsLoc[i][0] = -1;
+			}
+			
+
+			System.out.println("before findWords");
+			
 			// words[0][0]:  startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
 			findWords(); 
 			
-			//RIM
-			//return wordsLoc;
-			//convert int[][] to string
+			System.out.println("after findWords");
+
+			//convert int[][] to string and store it to string result
 			for (int i=0; i < M; i++)
 			{
 				if(wordsLoc[i][0] == -1){
@@ -72,26 +83,52 @@ public class Solve {
 		
 		private void findWords()
 		{ //deleted
+
+			System.out.println("enter findWords");
+
 			for (int k = 0 ; k < M ; k++)
 			{ //traverse M number of words
 			//Search for a word in a loop
+				
+				System.out.println("M times for loop");
+				
 				boolean isFound = false; //flag
 				char firstLetterofTheWord = words[k][0];
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 				if (howManyinDictionary == 0)
-			 	{//--> deleted
+			 	{//The first alphabet of the word is not in dictionary
 			 		wordsLoc[k][0] = -1;
 			 	} else {
-			 		canditLocs[0][0] = -1;
+			 		canditLocs[0][0] = -1; //initialize candidate locations
 			 						
+			 		int temp = k;
+			 		
 	 				while(!isFound)
 	 				{
+	 					System.out.println("in while(!isFound) loop");
+	 					
 	 					if(k+1 < alpha[(int)firstLetterofTheWord-97].getSize())
 	 					{
+	 				
+	 					//K should be increased here	
 	 						//locating potential start point
-	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(k+1); // getX deleted
-	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(k+1);						
-	 					} else if (k+1 >= 800) {
+	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(temp+1); // getX deleted
+	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(temp+1);						
+
+	 						temp++;
+	 						
+	 						if(temp != k && currentPointX == 0 && currentPointY == 0)
+	 						{
+	 							break;
+	 						}
+	 						
+	 					// THIS IS NOT UPDATED	
+	 						System.out.print("currentPointX is: ");
+	 						System.out.println(currentPointX);
+	 						System.out.print("currentPointY is: ");
+	 						System.out.println(currentPointY);	 						
+	 					
+	 					} else if (k+1 >= 800) { // in the case where an alphabet occurs more than 800 times in given dictionary
 	 						this.currentPointX = (this.currentPointX + 1)% this.N;
 							this.currentPointY = (this.currentPointY + 1);			
 							if (this.currentPointX == N && this.currentPointY == N)
@@ -99,7 +136,7 @@ public class Solve {
 								wordsLoc[k][0] = -1;
 								break;
 							}
-						} else {
+						} else { // no wanted alphabet in dictionary
 							wordsLoc[k][0] = -1;
 							break;
 						}
@@ -139,6 +176,9 @@ public class Solve {
 	 					}
 	 					//determines 
 	 					setWordsLoc(k);
+	 					
+	 					System.out.println("WordsLoc is set");
+	 					
 	 				}	 						
 		 				//	deleted
 				 }		
@@ -336,7 +376,7 @@ public class Solve {
 		/*
 		 * deleted
 		 */
-		private char seekRight(int x, int y){return dictionary[x][(y+1)%N];}
+/*		private char seekRight(int x, int y){return dictionary[x][(y+1)%N];}
 		private char seekLeft(int x, int y){return dictionary[x][(y-1)%N];}
 		private char seekUp(int x, int y){return dictionary[(x-1)%N][y];}
 		private char seekDown(int x, int y){return dictionary[(x+1)%N][y];}
@@ -350,11 +390,11 @@ public class Solve {
 			if (currentPointX < currentPointY) return dictionary[(currentPointX+1)%(N-(currentPointY-currentPointX))][(currentPointY-currentPointX) + (currentPointX+1)%(N-(currentPointY-currentPointX))];
 			else return dictionary[ (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY))][(currentPointY+1)%(N-(currentPointX-currentPointY))];
 		}
-		
+*/		
 		/*
 		 * deleted
 		 */
-		private void goRight(){currentPointY =  (currentPointY+1)%N;}
+/*		private void goRight(){currentPointY =  (currentPointY+1)%N;}
 		private void goLeft(){currentPointY =  (currentPointY-1)%N;}
 		private void goUp(){currentPointX =  (currentPointX-1)%N;}
 		private void goDown(){currentPointX =  (currentPointX+1)%N;}
@@ -376,6 +416,6 @@ public class Solve {
 				currentPointX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
 				currentPointY = (currentPointY+1)%(N-(currentPointX-currentPointY)) ; }
 		}
-
+*/
 		
 }
