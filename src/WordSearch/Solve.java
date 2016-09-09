@@ -26,8 +26,7 @@ public class Solve {
 	private int tempX;
 	private int tempY;
 	private int[][] canditLocs = new int[8][2]; // canditLocs[up][0]: deleted
-	public int[][] wordsLoc = new int[M][4]; // wordsLoc[word][0]: canditLocs deleted
-	// words[0][0]:  startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
+	public int[][] wordsLoc; // wordsLoc[word][0]: canditLocs deleted
 	public String result = "";
 
 	//RIM
@@ -37,12 +36,14 @@ public class Solve {
 			for (int i=0; i<alpha.length; i++){
 				alpha[i] = new Alphabet();
 			}
+
 			this.N = N;
 			this.M = M;
 			this.dictionary = dictionary;
 			fillAlpha(); //with dictionary[][], record where each alphabet is located
 			this.words = words;
-
+			this.wordsLoc = new int[M][4];
+			// words[0][0]:  startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
 			findWords(); 
 			
 			//RIM
@@ -74,6 +75,7 @@ public class Solve {
 			for (int k = 0 ; k < M ; k++)
 			{ //traverse M number of words
 			//Search for a word in a loop
+				boolean isFound = false; //flag
 				char firstLetterofTheWord = words[k][0];
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 				if (howManyinDictionary == 0)
@@ -82,7 +84,7 @@ public class Solve {
 			 	} else {
 			 		canditLocs[0][0] = -1;
 			 						
-	 				while(true)
+	 				while(!isFound)
 	 				{
 	 					if(k+1 < alpha[(int)firstLetterofTheWord-97].getSize())
 	 					{
@@ -136,7 +138,7 @@ public class Solve {
 	 						setCanditLocs();
 	 					}
 	 					//determines 
-	 					setWordsLoc(k); 
+	 					setWordsLoc(k);
 	 				}	 						
 		 				//	deleted
 				 }		
@@ -145,10 +147,10 @@ public class Solve {
 				 		
  		//Search canditLocs[][] and set wordsLoc
  		private void setWordsLoc(int k)
-		{
+		{//return true if find the word
  			if (canditLocs[0][0] == -1)
  			{
- 				wordsLoc[k][0] = -1;				
+ 				wordsLoc[k][0] = -1;
  			}else{
  				for (int i=0; i < this.M-1; i++)
  				{
@@ -170,7 +172,9 @@ public class Solve {
  					wordsLoc[k][0] = this.currentPointX;
  					wordsLoc[k][1] = this.currentPointY;
  				}
+
  			}
+ 			
  		}
  		
  		private void setCanditLocs()
