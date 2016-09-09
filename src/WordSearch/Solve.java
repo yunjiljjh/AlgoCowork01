@@ -9,7 +9,7 @@ public class Solve {
 	private char [][] dictionary; // tile array given
 	private char [][] words; // words you have to search
 	
-	/*저는 각 알파벳을 다 배열객체로 만들어서 alphabet객체내에서 위치를 가지도록 했어요.*/
+	/* deleted.*/
 	private Alphabet[] alpha; // from a-z location of each alphabet in the dictionary[][]
 	
 	private int currentPointX; //current location of 'x' in (x,y) of dictionary[][]
@@ -25,22 +25,25 @@ public class Solve {
 	//RIM
 	private int tempX;
 	private int tempY;
-	private int[][] canditLocs = new int[8][2]; // canditLocs[up][0]: word를  up방향에서 찾았을 때 x의 좌표
-	public int[][] wordsLoc = new int[M][4]; // wordsLoc[word][0]: canditLocs 중 endingPoint의 좌표가 가장 00에 가까운 word의 좌표
-	// words[0][0]: 첫 번째 word의 startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
+	private int[][] canditLocs = new int[8][2]; // canditLocs[up][0]: deleted
+	public int[][] wordsLoc = new int[M][4]; // wordsLoc[word][0]: canditLocs deleted
+	// words[0][0]:  startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
 	public String result = "";
 
 	//RIM
 //	public Solve(char[][] dictionary, char[][] words, int N, int M){
 	public Solve(char[][] dictionary, char[][] words, int N, int M){
 			alpha = new Alphabet[26];
+			for (int i=0; i<alpha.length; i++){
+				alpha[i] = new Alphabet();
+			}
 			this.N = N;
 			this.M = M;
 			this.dictionary = dictionary;
-			System.out.println(dictionary[0][0]);
-			this.words = words;
 			fillAlpha(); //with dictionary[][], record where each alphabet is located
-			findWords(); //실제 퍼즐을 푸는 함수
+			this.words = words;
+
+			findWords(); 
 			
 			//RIM
 			//return wordsLoc;
@@ -56,15 +59,10 @@ public class Solve {
 		}
 		
 		private void fillAlpha(){
-			System.out.println("알파객체 생성");
 			for (int i = 0 ; i < N ; i++){
 				for (int j = 0 ; j < N ; j++){
-					System.out.println((dictionary[i][j]));
 					int alphaACII = (int)(dictionary[i][j]) - 97;
-					System.out.println(alphaACII);
-					System.out.println(i+"그리고"+j);
-					alpha[alphaACII].setXY(i, j);
-					System.out.println("넣기 성공");
+					alpha[alphaACII].setXY(i, j);	
 				}
 			}
 		}
@@ -72,14 +70,14 @@ public class Solve {
 		
 		
 		private void findWords()
-		{ //실제 퍼즐을 푸는 함수
+		{ //deleted
 			for (int k = 0 ; k < M ; k++)
 			{ //traverse M number of words
 			//Search for a word in a loop
 				char firstLetterofTheWord = words[k][0];
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 				if (howManyinDictionary == 0)
-			 	{//--> 없으니까 print 0
+			 	{//--> deleted
 			 		wordsLoc[k][0] = -1;
 			 	} else {
 			 		canditLocs[0][0] = -1;
@@ -89,7 +87,7 @@ public class Solve {
 	 					if(k+1 < alpha[(int)firstLetterofTheWord-97].getSize())
 	 					{
 	 						//locating potential start point
-	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(k+1); // getX의 함수를 고치는 방법도.
+	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(k+1); // getX deleted
 	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(k+1);						
 	 					} else if (k+1 >= 800) {
 	 						this.currentPointX = (this.currentPointX + 1)% this.N;
@@ -137,12 +135,10 @@ public class Solve {
 	 					{
 	 						setCanditLocs();
 	 					}
-	 					//continue
-	 						
 	 					//determines 
 	 					setWordsLoc(k); 
 	 				}	 						
-		 				//	밑에 만들어놓은 seek함수와 go함수를 이용해 왓다리 갔다리 비교하면 될듯
+		 				//	deleted
 				 }		
 			}
 		}
@@ -334,7 +330,7 @@ public class Solve {
 
 
 		/*
-		 * 주변 문자 seek 함수. dictionary[][]에서 current point 주변을 살핀다.
+		 * deleted
 		 */
 		private char seekRight(int x, int y){return dictionary[x][(y+1)%N];}
 		private char seekLeft(int x, int y){return dictionary[x][(y-1)%N];}
@@ -352,7 +348,7 @@ public class Solve {
 		}
 		
 		/*
-		 * 칸 이동 함수. dictionary[][]에서 current point를 움직인다.
+		 * deleted
 		 */
 		private void goRight(){currentPointY =  (currentPointY+1)%N;}
 		private void goLeft(){currentPointY =  (currentPointY-1)%N;}
