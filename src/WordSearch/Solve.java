@@ -36,11 +36,10 @@ public class Solve {
 			alpha = new Alphabet[26];
 			this.N = N;
 			this.M = M;
-			fillAlpha(); //with dictionary[][], record where each alphabet is located
 			this.dictionary = dictionary;
 			System.out.println(dictionary[0][0]);
 			this.words = words;
-
+			fillAlpha(); //with dictionary[][], record where each alphabet is located
 			findWords(); //실제 퍼즐을 푸는 함수
 			
 			//RIM
@@ -57,12 +56,15 @@ public class Solve {
 		}
 		
 		private void fillAlpha(){
+			System.out.println("알파객체 생성");
 			for (int i = 0 ; i < N ; i++){
 				for (int j = 0 ; j < N ; j++){
 					System.out.println((dictionary[i][j]));
 					int alphaACII = (int)(dictionary[i][j]) - 97;
+					System.out.println(alphaACII);
+					System.out.println(i+"그리고"+j);
 					alpha[alphaACII].setXY(i, j);
-					
+					System.out.println("넣기 성공");
 				}
 			}
 		}
