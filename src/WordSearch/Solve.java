@@ -6,7 +6,9 @@ public class Solve {
 	private char [][] dictionary; // tile array given
 	private char [][] words; // words you have to search
 	
-	/* deleted.*/
+//test
+	private int alphabetTest = 0;
+	
 	private Alphabet[] alpha; // from a-z location of each alphabet in the dictionary[][]
 	
 	private int currentPointX; //current location of 'x' in (x,y) of dictionary[][]
@@ -34,7 +36,7 @@ public class Solve {
 			this.wordsLoc = new int[M][4];
 			// words[0][0]:  startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
 
-			System.out.println("beginning findWords");
+			//System.out.println("beginning findWords");
 			
 			findWords(); 
 
@@ -61,7 +63,7 @@ public class Solve {
 		
 		private void fillAlpha(){
 			
-			System.out.println("fillAlpha is called");
+			System.out.print("fillAlpha is called. ");
 			
 			for (int i = 0 ; i < N ; i++){
 				for (int j = 0 ; j < N ; j++){
@@ -92,18 +94,18 @@ public class Solve {
 				char firstLetterofTheWord = words[k][0];
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 				
-				System.out.println("into if");
+				System.out.print("into if. ");
 				
 				if (howManyinDictionary == 0)
 			 	{//no wanted alphabet in the dictionary
 
-					System.out.println("no wanted alphabet in the dictionary");
+					System.out.println("\n no wanted alphabet in the dictionary");
 
 			 		wordsLoc[k][0] = -1;
 			 	} else {
 			 		canditLocs[0][0] = -1;
 			 		
-					System.out.print("into while(!isFound). k is: ");
+					System.out.print("\ninto while(!isFound). k is: ");
 					System.out.println(k);
 //		
 					int cnt = 0;
@@ -113,18 +115,17 @@ public class Solve {
 //
 	 					cnt++;
 	 					
-	 					if(cnt+1 < alpha[(int)firstLetterofTheWord-97].getSize())
+	 					if(cnt <= alpha[(int)firstLetterofTheWord-97].getSize())
 	 					{
 	 						System.out.printf("cnt is: %d\n", cnt);
 	 						
 	 						//locating potential start point
-	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(cnt+1); 
-	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(cnt+1);						
+	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(cnt); 
+	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(cnt);						
 
-	 						System.out.printf("currentPointX is: %d\n", this.currentPointX);
-	 						System.out.printf("currentPoinntY is: %d\n", this.currentPointY);
+	 						System.out.printf("currentPoint is: (%d, %d)\n", this.currentPointX, this.currentPointY);
 
-	 					} else if (cnt+1 >= 800) {
+	 					} else if (cnt >= 800) {
 	 						//dictionary contains more than 800 same alphabet. 
 	 						this.currentPointX = (this.currentPointX + 1)% this.N;
 							this.currentPointY = (this.currentPointY + 1);			
@@ -138,8 +139,12 @@ public class Solve {
 							break;
 						}
 	 					//checking surrounds
-	 					
-	 					if ( checkRight(this.currentPointX, this.currentPointY)  )
+
+	 					System.out.print("into checkX things. ");
+
+//test
+/*	 					
+	 					if ( checkRight(this.currentPointX, this.currentPointY, this.indicatingPointY)  )
 	 					{
 	 						setCanditLocs();
 	 					}
@@ -163,19 +168,30 @@ public class Solve {
 	 					{
 	 						setCanditLocs();
 	 					}
-	 					if ( checkUpLeft(this.currentPointX, this.currentPointY) )
+*/
+	 					if ( checkUpLeft(this.currentPointX, this.currentPointY, this.indicatingPointY+1) )
 	 					{
 	 						setCanditLocs();
 	 					}
-	 					if ( checkDownRight(this.currentPointX, this.currentPointY) )
+/*	 					if ( checkDownRight(this.currentPointX, this.currentPointY) )
 	 					{
 	 						setCanditLocs();
 	 					}
+	*/ 					
+ 						System.out.println("After checkX things");
+ 						System.out.print("into setWordsLoc. ");
+
 	 					//determines 
 	 					setWordsLoc(k);
-	 				}	 						
-		 				//	deleted
-				 }		
+	 				}	 //While ended						
+		 			
+	 				this.indicatingPointX++;
+	 				if (indicatingPointX >=20)
+	 				{
+	 					break;
+	 				}
+	 				
+				 }		//for ended
 			}
 			
 			System.out.println("findWords is completed");
@@ -184,6 +200,9 @@ public class Solve {
  		//Search canditLocs[][] and set wordsLoc
  		private void setWordsLoc(int k)
 		{//return true if find the word
+
+ 			System.out.print("setWordsLoc. ");
+ 			
  			if (canditLocs[0][0] == -1)
  			{
  				wordsLoc[k][0] = -1;
@@ -210,7 +229,11 @@ public class Solve {
  				}
 
  			}
- 			
+
+ 		//for test	
+			System.out.print(this.words[this.indicatingPointX]);
+ 			System.out.printf(" is : (%d, %d), (%d, %d)\n", k, wordsLoc[k][0], wordsLoc[k][1], wordsLoc[k][2], wordsLoc[k][3]);
+
  		}
  		
  		private void setCanditLocs()
@@ -227,17 +250,19 @@ public class Solve {
  		}
  		
  		//return true and set tempX, tempY as lastPoint
- 		private boolean checkRight(int x, int y)
- 		{
+ 		
+/* 		
+ 		private boolean checkRight(int x, int y, int alphabetTest)
+ 		{ 			
  			this.tempX = x;
  			this.tempY = (y+1)%N;
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkRight(x, tempY);
  			} else {
  				return false;
@@ -247,13 +272,13 @@ public class Solve {
  		{
  			this.tempX = x;
  			this.tempY = (y-1)%N;
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkLeft(tempX, tempY);
  			} else {
  				return false;
@@ -263,13 +288,13 @@ public class Solve {
  		{
  			this.tempX = (x-1)%N;
  			this.tempY = y;
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkUp(tempX, tempY);
  			} else {
  				return false;
@@ -279,13 +304,13 @@ public class Solve {
  		{
  			this.tempX = (x+1)%N;
  			this.tempY = y;
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkDown(tempX, tempY);
  			} else {
  				return false;
@@ -295,13 +320,13 @@ public class Solve {
  		{
  			this.tempX = (x-1)%N;
  			this.tempY = (y+1)%N;
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkUpRight(tempX, tempY);
  			} else {
  				return false;
@@ -311,19 +336,75 @@ public class Solve {
  		{
  			this.tempX = (x+1)%N;
  			this.tempY = (y-1)%N;
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkDownLeft(tempX, tempY);
  			} else {
  				return false;
 		 	}
  		}
- 		private boolean checkUpLeft(int x, int y)
+ */
+//WORKING ON
+ 		
+ 		private boolean checkUpLeft(int currentPointX, int currentPointY, int indicatingPointY)
+ 		{
+ 			this.alphabetTest = indicatingPointY;
+ 			//test
+			System.out.printf("in checkUpLeft(%d, %d, %d)\n", currentPointX, currentPointY, alphabetTest);
+ 			
+			if (currentPointX <= currentPointY)
+			{	
+				this.tempX = Math.floorMod((currentPointX-1),(N-(currentPointY-currentPointX)));
+				this.tempY = (currentPointY-currentPointX) + Math.floorMod((currentPointX-1),(N-(currentPointY-currentPointX)));
+			} else {
+
+				this.tempX = (currentPointX-currentPointY) + Math.floorMod((currentPointY-1),(N-(currentPointX-currentPointY)));
+				this.tempY = Math.floorMod((currentPointY-1),(N-(currentPointX-currentPointY))); 
+
+				
+//				this.tempX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
+//				this.tempY = (currentPointY+1)%(N-(currentPointX-currentPointY));
+			}
+			
+			System.out.printf("tempLoc is (%d, %d)\n", this.tempX, this.tempY);
+			if(this.tempX < 0 || this.tempY < 0)
+			{
+				System.out.println("modular");
+			}
+			
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
+ 			{	
+ 				
+ 				System.out.println("not alphabet");
+ 				
+				System.out.println();
+
+ 				return true;
+ 			}
+ //WorkingonHere			
+ 			if ( dictionary[this.tempX][this.tempY] == words[indicatingPointX][alphabetTest] )
+ 			{
+ 				
+ 				System.out.println("Here?");
+ 				
+ 				alphabetTest++;
+ 				return checkUpLeft(tempX, tempY, alphabetTest);
+ 			} else {
+ 				
+ 				System.out.println("NOT MATHCED");
+ 				System.out.printf("\n==================\ndictionary[tempX][tempY] is: %c, words[iPX][iPY] is: %c\n=======================\n", 
+ 						this.dictionary[this.tempX][this.tempY], this.words[indicatingPointX][alphabetTest]);
+ 				
+ 				return false;
+		 	}
+ 		}
+/* 		
+ 		private boolean checkDownRight(int x, int y)
  		{
 			if (currentPointX < currentPointY)
 			{
@@ -333,42 +414,21 @@ public class Solve {
 				this.tempX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
 				this.tempY = (currentPointY+1)%(N-(currentPointX-currentPointY));
 			}
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
+ 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
  			{	
  				return true;
  			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
+ 			if ( this.dictionary[this.tempX][this.tempY] == this.words[indicatingPointX][alphabetTest] )
  			{
- 				indicatingPointY++;
- 				return checkUpLeft(tempX, tempY);
- 			} else {
- 				return false;
-		 	}
- 		}
- 		private boolean checkDownRight(int x, int y)
- 		{
-			if (currentPointX < currentPointY)
-			{
-				this.tempX = (currentPointX-1)%(N-(currentPointY-currentPointX));
-				this.tempY = (currentPointY-currentPointX) + (currentPointX-1)%(N-(currentPointY-currentPointX));
-			} else {
-				this.tempX = (currentPointX-currentPointY) + (currentPointY-1)%(N-(currentPointX-currentPointY));
-				this.tempY = (currentPointY-1)%(N-(currentPointX-currentPointY)); 
-			}
- 			if (words[indicatingPointX][indicatingPointY] < 'a' || words[indicatingPointX][indicatingPointY] > 'z') 
- 			{	
- 				return true;
- 			}
- 			if ( this.dictionary[x][this.tempY] == this.words[indicatingPointX][indicatingPointY] )
- 			{
- 				indicatingPointY++;
+ 				alphabetTest++;
  				return checkDownRight(tempX, tempY);
  			} else {
  				return false;
 		 	}
  		}
-
-		private void goRight(){currentPointY =  (currentPointY+1)%N;}
+*/
+ 		
+/*		private void goRight(){currentPointY =  (currentPointY+1)%N;}
 		private void goLeft(){currentPointY =  (currentPointY-1)%N;}
 		private void goUp(){currentPointX =  (currentPointX-1)%N;}
 		private void goDown(){currentPointX =  (currentPointX+1)%N;}
@@ -390,6 +450,6 @@ public class Solve {
 				currentPointX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
 				currentPointY = (currentPointY+1)%(N-(currentPointX-currentPointY)) ; }
 		}
-
+*/
 		
 }
