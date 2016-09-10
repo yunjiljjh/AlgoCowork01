@@ -35,8 +35,6 @@ public class Solve {
 			this.words = words;
 			this.wordsLoc = new int[M][4];
 			// words[0][0]:  startinPointX, words[0][1]: startingPointY, words[0][2]: endingPointX, words[0][3]: endingPointY
-
-			//System.out.println("beginning findWords");
 			
 			findWords(); 
 
@@ -49,82 +47,57 @@ public class Solve {
 				if(wordsLoc[i][0] == -1){
 					result += "0\n";
 				}else{
-					result = result + java.util.Arrays.toString(wordsLoc[i]) + '\n';
+					for (int j=0; j < 4; j++)
+					{
+						result = result + wordsLoc[i][j] + " ";
+					}
+					
+					result = result + "\n";
+					
+					System.out.printf("result is: %s", result);
+
 				}
-				
-				System.out.print("result is: ");
-				System.out.println(result);
-				
 			}			
-			
-			System.out.println("result is generated");
+			System.out.print("generated result is: ");
+			System.out.print(result);
 			
 		}
 		
-		private void fillAlpha(){
-			
-			System.out.print("fillAlpha is called. ");
-			
+		private void fillAlpha(){			
 			for (int i = 0 ; i < N ; i++){
 				for (int j = 0 ; j < N ; j++){
 					int alphaACII = (int)(dictionary[i][j]) - 97;
 					alpha[alphaACII].setXY(i, j);	
 				}
 			}
-			
-			System.out.println("fillAlpha is completed");
-			
 		}
 
 		
 		
 		private void findWords()
-		{ //deleted
-			
-			System.out.println("findWords is started");
-			
+		{
 			for (int k = 0 ; k < M ; k++)
 			{ //traverse M number of words
-				
-				System.out.printf("\n%%%%%%%%%%%%%%%%\nlooking for word: ");
-//Now Here				
-//				System.out.println(this.words[this.indicatingPointX]);
-
 			//Search for a word in a loop
 				boolean isFound = false; //flag
 				char firstLetterofTheWord = words[k][0];
 				int howManyinDictionary = alpha[(int)firstLetterofTheWord-97].getSize();
 				
-				System.out.print("into if. ");
-				
 				if (howManyinDictionary == 0)
 			 	{//no wanted alphabet in the dictionary
-
-					System.out.println("\n no wanted alphabet in the dictionary");
-
 			 		wordsLoc[k][0] = -1;
 			 	} else {
 			 		canditLocs[0][0] = -1;
-			 		
-					System.out.print("\ninto while(!isFound). k is: ");
-					System.out.println(k);
-//		
-					int cnt = 0;
-					
+
+			 		int cnt = 0;					
 	 				while(!isFound)
 	 				{
-//
-	 					cnt++;
-	 					
+	 					cnt++;	 					
 	 					if(cnt <= alpha[(int)firstLetterofTheWord-97].getSize())
-	 					{
-	 						System.out.printf("cnt is: %d\n", cnt);
-	 						
+	 					{	 						
 	 						//locating potential start point
 	 						this.currentPointX = alpha[(int)firstLetterofTheWord-97].getX(cnt); 
 	 						this.currentPointY = alpha[(int)firstLetterofTheWord-97].getY(cnt);						
-
-	 						System.out.printf("currentPoint is: (%d, %d)\n", this.currentPointX, this.currentPointY);
 
 	 					} else if (cnt >= 800) {
 	 						//dictionary contains more than 800 same alphabet. 
@@ -140,9 +113,6 @@ public class Solve {
 							break;
 						}
 	 					//checking surrounds
-
-	 					System.out.print("into checkX things. ");
-
 //test
 /*	 					
 	 					if ( checkRight(this.currentPointX, this.currentPointY, this.indicatingPointY)  )
@@ -179,12 +149,16 @@ public class Solve {
 	 						setCanditLocs();
 	 					}
 	*/ 					
- 						System.out.println("After checkX things");
- 						System.out.print("into setWordsLoc. ");
-
 	 					//determines 
-	 					setWordsLoc(k);
-	 				}	 //While ended						
+	 					isFound = setWordsLoc(k);
+	 					
+	 				}	 //While ended			
+
+	 				String aaa;
+ 					aaa = java.util.Arrays.toString(words[k]);
+ 					System.out.print(aaa);
+ 					System.out.printf(" is: (%d, %d), (%d, %d)\n", wordsLoc[k][0], wordsLoc[k][1], wordsLoc[k][2], wordsLoc[k][3]);
+
 		 			
 	 				this.indicatingPointX++;
 	 				if (indicatingPointX >=20)
@@ -194,25 +168,18 @@ public class Solve {
 	 				
 				 }		//for ended
 			}
-			
-			System.out.println("findWords is completed");
 		}
 				 		
  		//Search canditLocs[][] and set wordsLoc
- 		private void setWordsLoc(int k)
-		{//return true if find the word
-
- 			System.out.print("setWordsLoc. \n");
- 			
+ 		private boolean setWordsLoc(int k)
+		{//return true if find the word 			
  			if (canditLocs[0][0] == -1)
  			{
  				wordsLoc[k][0] = -1;
+ 				return false;
  			}else{
  				for (int i=0; i < 7; i++)
  				{
- 					
-// 					System.out.printf("line: canditLocs[%d][0] < canditLocs[%d][0]\ncanditLocs[%d][0]: %d, canditLocs[%d][0]: %d\n", i, (i+1), i, canditLocs[i][0], (i+1), canditLocs[i+1][0]);
-//Here
  					if (canditLocs[i][0] < canditLocs[i+1][0])
  					{
  						wordsLoc[k][2] = canditLocs[i+1][0];
@@ -228,16 +195,17 @@ public class Solve {
  						wordsLoc[k][2] = canditLocs[i][0];
  						wordsLoc[k][3] = canditLocs[i][1];
  					}
+ 					
  					wordsLoc[k][0] = this.currentPointX;
  					wordsLoc[k][1] = this.currentPointY;
- 				}
 
+ 				}
+ 				return true;
  			}
 
  		//for test	
-			System.out.print(this.words[this.indicatingPointX]);
- 			System.out.printf(" is : (%d, %d), (%d, %d)\n", k, wordsLoc[k][0], wordsLoc[k][1], wordsLoc[k][2], wordsLoc[k][3]);
-
+// 			System.out.print(this.words[this.indicatingPointX]);
+// 			System.out.printf(" is : (%d, %d), (%d, %d)\n", this.wordsLoc[k][0], wordsLoc[k][1], wordsLoc[k][2], wordsLoc[k][3]);
  		}
  		
  		private void setCanditLocs()
@@ -369,43 +337,27 @@ public class Solve {
 
 				this.tempX = (currentPointX-currentPointY) + Math.floorMod((currentPointY-1),(N-(currentPointX-currentPointY)));
 				this.tempY = Math.floorMod((currentPointY-1),(N-(currentPointX-currentPointY))); 
-
-				
-//				this.tempX = (currentPointX-currentPointY) + (currentPointY+1)%(N-(currentPointX-currentPointY));
-//				this.tempY = (currentPointY+1)%(N-(currentPointX-currentPointY));
 			}
 			
-			System.out.printf("tempLoc is (%d, %d)\n", this.tempX, this.tempY);
+//			System.out.printf("tempLoc is (%d, %d)\n", this.tempX, this.tempY);
 			if(this.tempX < 0 || this.tempY < 0)
 			{
 				System.out.println("modular");
 			}
-//LookAtHere	
 			if(alphabetTest >= this.words[indicatingPointX].length)
-// 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
-
  			{	
- 				
- 				System.out.println("not alphabet");
- 				
  	 			System.out.println("checkUpLeft finished");
 
  				return true;
  			}
- //WorkingonHere			
  			if ( dictionary[this.tempX][this.tempY] == words[indicatingPointX][alphabetTest] )
  			{
  				
- 				System.out.println("Here?");
+ 				System.out.println("right alphabet");
  				
  				alphabetTest++;
  				return checkUpLeft(tempX, tempY, alphabetTest);
  			} else {
- 				
- 				System.out.println("NOT MATHCED");
- 				System.out.printf("\n==================\ndictionary[tempX][tempY] is: %c, words[iPX][iPY] is: %c\n=======================\n", 
- 						this.dictionary[this.tempX][this.tempY], this.words[indicatingPointX][alphabetTest]);
- 				
  				return false;
 		 	}
  		}
