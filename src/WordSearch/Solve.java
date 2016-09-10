@@ -86,8 +86,9 @@ public class Solve {
 			for (int k = 0 ; k < M ; k++)
 			{ //traverse M number of words
 				
-				System.out.print("looking for word: ");
-				System.out.println(this.words[this.indicatingPointX]);
+				System.out.printf("\n%%%%%%%%%%%%%%%%\nlooking for word: ");
+//Now Here				
+//				System.out.println(this.words[this.indicatingPointX]);
 
 			//Search for a word in a loop
 				boolean isFound = false; //flag
@@ -201,14 +202,17 @@ public class Solve {
  		private void setWordsLoc(int k)
 		{//return true if find the word
 
- 			System.out.print("setWordsLoc. ");
+ 			System.out.print("setWordsLoc. \n");
  			
  			if (canditLocs[0][0] == -1)
  			{
  				wordsLoc[k][0] = -1;
  			}else{
- 				for (int i=0; i < this.M-1; i++)
+ 				for (int i=0; i < 7; i++)
  				{
+ 					
+// 					System.out.printf("line: canditLocs[%d][0] < canditLocs[%d][0]\ncanditLocs[%d][0]: %d, canditLocs[%d][0]: %d\n", i, (i+1), i, canditLocs[i][0], (i+1), canditLocs[i+1][0]);
+//Here
  					if (canditLocs[i][0] < canditLocs[i+1][0])
  					{
  						wordsLoc[k][2] = canditLocs[i+1][0];
@@ -376,13 +380,15 @@ public class Solve {
 			{
 				System.out.println("modular");
 			}
-			
- 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
+//LookAtHere	
+			if(alphabetTest >= this.words[indicatingPointX].length)
+// 			if (words[indicatingPointX][alphabetTest] < 'a' || words[indicatingPointX][alphabetTest] > 'z') 
+
  			{	
  				
  				System.out.println("not alphabet");
  				
-				System.out.println();
+ 	 			System.out.println("checkUpLeft finished");
 
  				return true;
  			}
