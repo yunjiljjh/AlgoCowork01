@@ -1,14 +1,21 @@
+/* (CSI 3108-01) Algorithm Analysis class HW1
+ * Lee, Yun Ji	(2013198070)  	 
+ * Jeong, Da Som(2012127028)	
+ * Nam, Hyo Rim (2013147531)
+ * 2016 Fall */
+/*Solve: 
+ * get N, M, dictionary, words from InputReader, 
+ * find given words and store their location in public String result*/
+
 package WordSearch;
 
 public class Solve {
 	private int N; //size of N in N*N dictionary array
 	private int M; //number of words to be searched
 	private char [][] dictionary; // tile array given
-	private char [][] words; // words you have to search
+	private char [][] words; // words you have to search	
 	
-//test
-	private int alphabetTest = 0;
-	
+	private int alphabetTest = 0;	
 	private Alphabet[] alpha; // from a-z location of each alphabet in the dictionary[][]
 	
 	private int currentPointX; //current location of 'x' in (x,y) of dictionary[][]
@@ -37,8 +44,6 @@ public class Solve {
 			for (int i = 0; i < 8; i++){canditLocs[i][0] = -1;} // initializing canditLocs
 			
 			findWords(); 
-
-			System.out.println("findWords completed");
 			
 			//converts wordsLoc to string
 			for (int i=0; i < this.M; i++)
@@ -51,16 +56,17 @@ public class Solve {
 						result = result + wordsLoc[i][j] + " ";
 					}
 					
-					result = result + "\n";
-					
-					System.out.printf("result is: %s", result);
-
+					if(i != this.M -1)
+					{
+						result = result + "\n";
+					}
 				}
 			}			
-			System.out.print("generated result is: ");
+			System.out.print("generated result is: \n");
 			System.out.print(result);			
 		}
 		
+		//fill object for alphabet location
 		private void fillAlpha(){			
 			for (int i = 0 ; i < this.N ; i++){
 				for (int j = 0 ; j < this.N ; j++){
@@ -69,7 +75,6 @@ public class Solve {
 				}
 			}
 		}
-
 		
 		//Find all words and store it in wordsLoc['word'] = [startingX, startingY, endingX, endingY]
 		private void findWords()
@@ -111,7 +116,6 @@ public class Solve {
 							wordsLoc[k][0] = -1;
 							break;
 						}
-	 					
 	 					canditLocs[0][0] = -1;
 	 					//checking surroundings
 	 					if ( checkRight(currentPointX, currentPointY, indicatingPointY+1)  )
@@ -176,19 +180,10 @@ public class Solve {
  		private void setWordsLoc(int k)
 		{//return true if find the word  to set isFound	flag		
  			if (canditLocs[1][0] == -1)
- 			{//one word is found
-// 				
- 				System.out.println("one candidate");
- 				
+ 			{//one word is found 				
 				wordsLoc[k][2] = canditLocs[0][0];
 				wordsLoc[k][3] = canditLocs[0][1];
-				
-				System.out.printf("wordsLoc[%d][2] (%d) = canditLocs[0][0] (%d)\n", k, wordsLoc[k][2], canditLocs[0][0]);
-				System.out.printf("wordsLoc[%d][3] (%d) = canditLocs[0][1] (%d)\n", k, wordsLoc[k][3], canditLocs[0][1]);
  			}else{//many the same words that starts from the same alphabet founds
- 				
- 				System.out.println("several candidates");
- 				
  				for (int i=0; i < 7; i++)
  				{
  					if (canditLocs[i][0] < canditLocs[i+1][0])
@@ -211,10 +206,6 @@ public class Solve {
  			}
 			wordsLoc[k][0] = currentPointX;
 			wordsLoc[k][1] = currentPointY;
-
-//for test	
- 			System.out.print(this.words[this.indicatingPointX]);
- 			System.out.printf(" is : (%d, %d), (%d, %d)\n", this.wordsLoc[k][0], wordsLoc[k][1], wordsLoc[k][2], wordsLoc[k][3]);
  		}
 
  		//set canditLocs[next] to possible ending [x, y]
@@ -231,8 +222,7 @@ public class Solve {
  			}
  		}
  		
- 		//return true and set tempX, tempY as lastPoint
- 		
+ 		//return true and set tempX, tempY as lastPoint 		 		
  		
  		private boolean checkRight(int x, int y, int indicatingPointY)
  		{ 		
@@ -240,31 +230,25 @@ public class Solve {
 
  			tempX = x;
  			tempY = Math.floorMod((y+1),N);
- 			
- 			System.out.printf("in R(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
 
-			if(tempX < 0 || tempY < 0)
+ 			if(tempX < 0 || tempY < 0)
 			{
 				System.exit(1);
 			}
 			if(alphabetTest >= words[indicatingPointX].length)
  			{	
- 	 			System.out.println("checkR finished");
-
+ 	 			tempY = y;	 			
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
  			{
- 				
- 				System.out.println("right alphabet");
- 				
  				alphabetTest++;
  				return checkRight(tempX, tempY, alphabetTest);
  			} else {
  				return false;
 		 	}
  		}
+ 		
  		private boolean checkLeft(int x, int y, int indicatingPointY)
  		{
  			alphabetTest = indicatingPointY;
@@ -272,24 +256,17 @@ public class Solve {
  			tempX = x;
  			tempY = Math.floorMod((y-1),N);
 
- 			System.out.printf("in L(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
- 			
  			if(tempX < 0 || tempY < 0)
 			{
 				System.exit(1);
 			}
 			if(alphabetTest >= this.words[indicatingPointX].length)
  			{	
- 	 			System.out.println("checkL finished");
-
+ 	 			tempY = y;
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
  			{
- 				
- 				System.out.println("right alphabet");
- 				
  				alphabetTest++;
  				return checkLeft(tempX, tempY, alphabetTest);
  			} else {
@@ -302,26 +279,18 @@ public class Solve {
 
  			tempX = Math.floorMod((x-1),N);
  			tempY = y;
-
- 			System.out.printf("in U(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
  			
 			if(tempX < 0 || tempY < 0)
 			{
-				System.out.println("modular");
 				System.exit(1);
 			}
 			if(alphabetTest >= this.words[indicatingPointX].length)
  			{	
- 	 			System.out.println("checkU finished");
-
+ 	 			tempX = x;
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
  			{
- 				
- 				System.out.println("right alphabet");
- 				
  				alphabetTest++;
  				return checkUp(tempX, tempY, alphabetTest);
  			} else {
@@ -334,41 +303,6 @@ public class Solve {
 
  			tempX = Math.floorMod((x+1),N);
  			tempY = y;
- 			
- 			System.out.printf("in D(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
- 			
-			if(tempX < 0 || tempY < 0)
-			{
-				System.out.println("modular");
-				System.exit(1);
-			}
-			if(alphabetTest >= this.words[indicatingPointX].length)
- 			{	
- 	 			System.out.println("checkD finished");
-
- 				return true;
- 			}
- 			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
- 			{
- 				
- 				System.out.println("right alphabet");
- 				
- 				alphabetTest++;
- 				return checkDown(tempX, tempY, alphabetTest);
- 			} else {
- 				return false;
-		 	}
- 		}
- 		private boolean checkUpRight(int x, int y, int indicatingPointY)
- 		{
- 			alphabetTest = indicatingPointY;
- 			
- 			tempX = Math.floorMod((x-1),N);
- 			tempY = Math.floorMod((y+1),N);
-
- 			System.out.printf("in UR(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
 
  			if(tempX < 0 || tempY < 0)
 			{
@@ -376,54 +310,82 @@ public class Solve {
 			}
 			if(alphabetTest >= this.words[indicatingPointX].length)
  			{	
- 	 			System.out.println("checkUR finished");
-
+ 	 			tempX = x;
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
  			{
- 				
- 				System.out.println("right alphabet");
- 				
+ 				alphabetTest++;
+ 				return checkDown(tempX, tempY, alphabetTest);
+ 			} else {
+ 				return false;
+		 	}
+ 		}
+ 		
+ 		private boolean checkUpRight(int x, int y, int indicatingPointY)
+ 		{
+ 			alphabetTest = indicatingPointY;
+ 			int tempLine = x+y+1-N; 				
+
+ 			if((x+y) < N)
+ 			{
+ 				tempX = Math.floorMod((x-1),(x+y+1));
+ 				tempY = Math.floorMod((y+1),(x+y+1));
+ 			} else {
+ 				tempX = tempLine + Math.floorMod((x-tempLine-1), (N-tempLine));
+ 				tempY = tempLine + Math.floorMod((y-tempLine+1), (N-tempLine));
+ 			} 			
+
+ 			if(tempX < 0 || tempY < 0)
+			{
+				System.exit(1);
+			}
+			if(alphabetTest >= this.words[indicatingPointX].length)
+ 			{	
+ 				tempX = x;
+ 				tempY = y;
+ 				return true;
+ 			}
+ 			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
+ 			{
  				alphabetTest++;
  				return checkUpRight(tempX, tempY, alphabetTest);
  			} else {
  				return false;
 		 	}
  		}
+
  		private boolean checkDownLeft(int x, int y, int indicatingPointY)
  		{
  			alphabetTest = indicatingPointY;
+ 			int tempLine = x+y+1-N; 				
 
- 			tempX = Math.floorMod((x+1), N);
- 			tempY = Math.floorMod((y-1), N);
- 			
- 			System.out.printf("in DL(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
-
+ 			if((x+y) < N)
+ 			{
+ 				tempX = Math.floorMod((x+1),(x+y+1));
+ 				tempY = Math.floorMod((y-1),(x+y+1));
+ 			} else {
+ 				tempX = tempLine + Math.floorMod((x-tempLine+1), (N-tempLine));
+ 				tempY = tempLine + Math.floorMod((y-tempLine-1), (N-tempLine));
+ 			}
 			if(tempX < 0 || tempY < 0)
 			{
 				System.exit(1);
 			}
 			if(alphabetTest >= this.words[indicatingPointX].length)
  			{	
- 	 			System.out.println("checkDL finished");
-
+ 				tempX = x;
+  				tempY = y;
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
- 			{
- 				
- 				System.out.println("right alphabet");
- 				
+ 			{				
  				alphabetTest++;
  				return checkDownLeft(tempX, tempY, alphabetTest);
  			} else {
  				return false;
 		 	}
  		}
- 
-//WORKING ON
  		
  		private boolean checkUpLeft(int x, int y, int indicatingPointY)
  		{
@@ -439,33 +401,21 @@ public class Solve {
 				tempY = Math.floorMod((y-1),(N-(x-y))); 
 			}
 
-			System.out.printf("in UpLeft(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
-
 			if(tempX < 0 || tempY < 0)
 			{
 				System.exit(1);
 			}
 			if(alphabetTest >= this.words[indicatingPointX].length)
  			{	
-// 	 			System.out.println("checkUpLeft finished");
-
+				tempX = x;
+				tempY = y; 
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
- 			{
- 				
- 				System.out.println("right alphabet from UL");
- 				
+ 			{ 				
  				alphabetTest++;
- 				System.out.printf("returning UL(%d, %d, %d)", tempX, tempY, alphabetTest);
  				return checkUpLeft(tempX, tempY, alphabetTest);
  			} else {
- 
- 				System.out.println("wrong alphabet from UL");
- 				System.out.printf("dictionary[%d][%d] (%c) != words[%d][%d] (%c)\n", tempX, tempY, 
- 						dictionary[tempX][tempY], indicatingPointX, alphabetTest, words[indicatingPointX][alphabetTest]);
-
  				return false;
 		 	}
  		}
@@ -482,26 +432,18 @@ public class Solve {
 				tempX = (x-y) + Math.floorMod((y+1), (N-(x-y)));
 				tempY = Math.floorMod((y+1), (N-(x-y)));
 			}
-			
- 			System.out.printf("in DR(%d, %d, %d), ", x, y, alphabetTest);
-			System.out.printf("tempLoc is (%d, %d)\n", tempX, tempY);
-			
 			if(tempX < 0 || tempY < 0)
 			{
-				System.out.println("modular");
 				System.exit(1);
 			}
 			if(alphabetTest >= this.words[indicatingPointX].length)
  			{	
- 	 			System.out.println("checkDR finished");
-
+ 				tempX = x;
+ 				tempY = y;  	 			
  				return true;
  			}
  			if ( dictionary[tempX][tempY] == words[indicatingPointX][alphabetTest] )
- 			{
- 				
- 				System.out.println("right alphabet");
- 				
+ 			{				
  				alphabetTest++;
  				return checkDownRight(tempX, tempY, alphabetTest);
  			} else {

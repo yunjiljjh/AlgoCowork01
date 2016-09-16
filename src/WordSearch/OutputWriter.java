@@ -1,3 +1,10 @@
+/* (CSI 3108-01) Algorithm Analysis class HW1
+ * Lee, Yun Ji	(2013198070)  	 
+ * Jeong, Da Som(2012127028)	
+ * Nam, Hyo Rim (2013147531)
+ * 2016 Fall */
+/* OutputWrite: get String result from Solve and write it to [studentID].txt*/
+
 package WordSearch;
 
 import java.io.FileWriter;
@@ -8,9 +15,7 @@ public class OutputWriter {
 
 	public void print(String str){
 		try{
-//			fw=new FileWriter("C:\\hw1\\algoOutput.txt",true);
-//for test
-			fw=new FileWriter("algoOutput.txt",true);
+			fw=new FileWriter("C:\\hw1\\2013198070.txt",true);
 
 			fw.write(str);
 			fw.close();

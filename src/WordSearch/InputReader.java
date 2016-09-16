@@ -1,5 +1,11 @@
-package WordSearch;
+/* (CSI 3108-01) Algorithm Analysis class HW1
+ * Lee, Yun Ji	(2013198070)  	 
+ * Jeong, Da Som(2012127028)	
+ * Nam, Hyo Rim (2013147531)
+ * 2016 Fall */
+/* WordSearch: read input.txt and store it to public N, M, dictionary, words*/
 
+package WordSearch;
 	
 	import java.io.BufferedReader;
 	import java.io.FileReader;
@@ -53,7 +59,6 @@ package WordSearch;
 					if (rowDic == N) break;
 				}
 				while((s=br.readLine())!=null){
-//					if (rowWord==M-1) break;
 					if (rowWord >= M) break;					
 					char[] c = s.toCharArray();
 					words[rowWord] = new char[c.length];
